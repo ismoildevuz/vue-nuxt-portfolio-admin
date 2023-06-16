@@ -18,7 +18,7 @@
           <h3 class="">{{ el.description }}</h3>
         </div>
 
-        <div class="flex justify-between items-center items-end mt-3">
+        <div class="flex justify-between items-center mt-3">
           <div class="flex items-center gap-5">
             <h6>
               <span>{{ el.views }}</span>

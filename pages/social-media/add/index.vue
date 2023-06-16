@@ -2,7 +2,7 @@
   <div class="p-10">
     <form @submit.prevent="addItem">
       <div class="bg-white rounded-[20px]">
-        <FormHeader name="Project" page="add" />
+        <FormHeader name="Social Media" page="add" />
 
         <div class="p-[40px] pb-0">
           <div class="flex gap-[24px]">
@@ -49,28 +49,11 @@
               />
 
               <Input
-                @update:value="data.description = $event"
-                name="description"
-                label="Description"
-                placeholder="Enter description"
-                :value="data.description"
-              />
-
-              <Input
-                @update:value="data.link_github = $event"
-                name="link_github"
-                label="GitHub"
-                placeholder="Enter GitHub source link"
-                :value="data.link_github"
-                type="url"
-              />
-
-              <Input
-                @update:value="data.link_project = $event"
-                name="link_project"
-                label="Project"
-                placeholder="Enter link to project"
-                :value="data.link_project"
+                @update:value="data.link = $event"
+                name="link"
+                label="Link"
+                placeholder="Enter link"
+                :value="data.link"
                 type="url"
               />
             </div>
@@ -94,9 +77,7 @@ const upload = ref();
 
 const data = reactive({
   name: "",
-  description: "",
-  link_project: "",
-  link_github: "",
+  link: "",
 });
 
 const formData = new FormData();
@@ -111,12 +92,10 @@ const removePhoto = () => {
 
 const addItem = (e) => {
   formData.append("name", data.name);
-  formData.append("description", data.description);
-  formData.append("link_github", data.link_github);
-  formData.append("link_project", data.link_project);
+  formData.append("link", data.link);
 
   axios
-    .post(`http://localhost:3001/api/project`, formData)
+    .post(`http://localhost:3001/api/social-media`, formData)
     .then((res) => {
       ElNotification({
         title: "Added",
@@ -124,18 +103,14 @@ const addItem = (e) => {
       });
 
       data.name = "";
-      data.description = "";
-      data.link_github = "";
-      data.link_project = "";
+      data.link = "";
       upload.value.clearFiles();
 
       formData.delete("name");
-      formData.delete("description");
-      formData.delete("link_github");
-      formData.delete("link_project");
+      formData.delete("link");
       formData.delete("images");
 
-      useRouter().push({ name: "project" });
+      useRouter().push({ name: "social-media" });
     })
     .catch((error) => {
       const message = error?.response?.data?.message;

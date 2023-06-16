@@ -2,7 +2,7 @@
   <div v-if="data.loaded && data.item" class="p-10">
     <form @submit.prevent="updateItem">
       <div class="bg-white rounded-[20px]">
-        <FormHeader name="Project" page="edit" />
+        <FormHeader name="Social Media" page="edit" />
 
         <div class="p-[40px] pb-0">
           <div class="flex gap-[24px]">
@@ -39,6 +39,9 @@
 
                 <div :class="`${has_image ? 'block' : 'hidden'} duration-1000`">
                   <img
+                    width="50"
+                    height="50"
+                    class="w-[50px] h-[50px] object-cover rounded-full"
                     :src="`http://localhost:3001/api/image/file/${data.item.image?.file_name}`"
                     alt=""
                   />
@@ -56,28 +59,11 @@
               />
 
               <Input
-                @update:value="data.description = $event"
-                name="description"
-                label="Description"
-                placeholder="Enter description"
-                :value="data.description"
-              />
-
-              <Input
-                @update:value="data.link_github = $event"
-                name="link_github"
-                label="GitHub"
-                placeholder="Enter GitHub source link"
-                :value="data.link_github"
-                type="url"
-              />
-
-              <Input
-                @update:value="data.link_project = $event"
-                name="link_project"
-                label="Project"
-                placeholder="Enter link to project"
-                :value="data.link_project"
+                @update:value="data.link = $event"
+                name="link"
+                label="Link"
+                placeholder="Enter link"
+                :value="data.link"
                 type="url"
               />
             </div>
@@ -92,7 +78,7 @@
   </div>
 
   <div v-else-if="data.loaded">
-    <Error name="Project" path="project" />
+    <Error name="Social Media" path="social-media" />
   </div>
 </template>
 
@@ -108,9 +94,7 @@ const has_image = ref(false);
 
 const data = reactive({
   name: "",
-  description: "",
-  link_project: "",
-  link_github: "",
+  link: "",
   item: null,
   loaded: false,
 });
@@ -129,12 +113,10 @@ const removePhoto = () => {
 
 const updateItem = (e) => {
   formData.append("name", data.name);
-  formData.append("description", data.description);
-  formData.append("link_github", data.link_github);
-  formData.append("link_project", data.link_project);
+  formData.append("link", data.link);
 
   axios
-    .patch(`http://localhost:3001/api/project/${id}`, formData)
+    .patch(`http://localhost:3001/api/social-media/${id}`, formData)
     .then((res) => {
       ElNotification({
         title: "Updated",
@@ -142,18 +124,14 @@ const updateItem = (e) => {
       });
 
       data.name = "";
-      data.description = "";
-      data.link_github = "";
-      data.link_project = "";
+      data.link = "";
 
       data.item = null;
       data.loaded = false;
       upload.value.clearFiles();
 
       formData.delete("name");
-      formData.delete("description");
-      formData.delete("link_github");
-      formData.delete("link_project");
+      formData.delete("link");
       formData.delete("images");
 
       useRouter().go(-1);
@@ -182,15 +160,13 @@ const updateItem = (e) => {
 
 onMounted(() => {
   axios
-    .get(`http://localhost:3001/api/project/${id}`)
+    .get(`http://localhost:3001/api/social-media/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;
 
       data.name = res.data.name;
-      data.description = res.data.description;
-      data.link_github = res.data.link_github;
-      data.link_project = res.data.link_project;
+      data.link = res.data.link;
 
       if (res.data.image?.file_name) {
         has_image.value = true;
