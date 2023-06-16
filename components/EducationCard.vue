@@ -6,22 +6,37 @@
       <a target="_blank" :href="el.link">
         <div class="flex items-center gap-5">
           <img
-            width="50"
-            height="50"
-            class="w-[50px] h-[50px] object-cover rounded-full m-2"
+            width="100"
+            height="100"
+            class="w-[100px] h-[100px] object-cover rounded-full m-2"
             :src="`http://localhost:3001/api/image/file/${el.image?.file_name}`"
-            onerror="this.src='/images/no-image-sm.png'"
+            onerror="this.src='/images/no-image-edu.png'"
           />
 
-          <h3>
-            <span>{{ el.name }}</span>
-          </h3>
+          <div class="">
+            <div class="flex gap-5 items-end">
+              <h3 class="text-sm">
+                <span>{{ el.place }}</span>
+              </h3>
+
+              <h4 class="text-xs text-slate-600">
+                <span>
+                  {{ moment(el.date_from).format("YYYY.MM.DD") }} -
+                  {{ moment(el.date_to).format("YYYY.MM.DD") }}
+                </span>
+              </h4>
+            </div>
+
+            <h2 class="text-2xl mt-2 font-medium">
+              <span>{{ el.major }}</span>
+            </h2>
+          </div>
         </div>
       </a>
 
-      <div class="flex items-center gap-5 m-2">
+      <div class="flex items-center gap-5 m-2 mr-5">
         <nuxt-link
-          :to="`/social-media/edit/${el.id}`"
+          :to="`/education/edit/${el.id}`"
           class="bg-[#e8e8e8] hover:bg-[#d6d5d5] rounded-full p-2"
         >
           <Icons name="create" color="#ACACBE" />
@@ -40,6 +55,7 @@
 
 <script setup>
 import axios from "axios";
+import moment from "moment";
 import { ElNotification, ElMessageBox } from "element-plus";
 
 defineProps(["el"]);
@@ -57,7 +73,7 @@ const open = (id) => {
   )
     .then(() => {
       axios
-        .delete(`http://localhost:3001/api/social-media/${id}`)
+        .delete(`http://localhost:3001/api/education/${id}`)
         .then((res) => {
           ElNotification({
             title: "Deleted",
