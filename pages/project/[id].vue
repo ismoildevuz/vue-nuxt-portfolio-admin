@@ -3,12 +3,28 @@
     <div
       class="bg-slate-50 rounded-xl overflow-hidden shadow-[0_2px_4px_rgba(0,0,0,0.18)] duration-200 h-full flex flex-col"
     >
-      <img
-        height="400"
-        class="w-full h-[400px] object-cover"
-        :src="`http://localhost:3001/api/image/file/${data.item.image?.file_name}`"
-        onerror="this.src='/images/no-image-project.png'"
-      />
+      <div class="relative">
+        <nuxt-link
+          :to="`/project/edit/${data.item.id}`"
+          class="absolute top-5 right-5 bg-[#343541] rounded-full p-2"
+        >
+          <Icons name="create" color="#ACACBE" />
+        </nuxt-link>
+
+        <button
+          @click="open"
+          class="absolute bottom-5 right-5 bg-[#343541] rounded-full p-2"
+        >
+          <Icons name="delete_outline" color="#ACACBE" />
+        </button>
+
+        <img
+          height="400"
+          class="w-full h-[400px] object-cover select-none"
+          :src="`http://localhost:3001/api/image/file/${data.item.image?.file_name}`"
+          onerror="this.src='/images/no-image-project.png'"
+        />
+      </div>
 
       <div class="p-5 flex flex-col justify-between flex-grow">
         <div>
@@ -23,7 +39,7 @@
               <span>{{ data.item.views }} views</span>
             </h6>
 
-            
+            <Rating :rating="avrage(data.item.rating) || 0" />
           </div>
 
           <div class="flex gap-2">
@@ -96,29 +112,15 @@
     </div>
   </div>
 
-  <div v-else-if="data.loaded" class="text-center py-32">
-    <h1 class="font-['Inter'] font-medium text-[110px] leading-[115px]">
-      <span>404 Not Found</span>
-    </h1>
-
-    <h2 class="text-[16px] leading-[24px] py-5 mb-20">
-      <span>Your visited page not found. You may go Project page.</span>
-    </h2>
-
-    <router-link
-      to="/project"
-      class="bg-red-500 px-10 py-5 text-white rounded-md"
-    >
-      <span>Back to Project page</span>
-    </router-link>
+  <div v-else-if="data.loaded">
+    <Error name="Project" path="project" />
   </div>
-
-  <pre>{{ data.item }}</pre>
 </template>
 
 <script setup>
 import axios from "axios";
 import moment from "moment";
+import { ElNotification, ElMessageBox } from "element-plus";
 
 const { id } = useRoute().params;
 
@@ -126,6 +128,61 @@ const data = reactive({
   item: null,
   loaded: false,
 });
+
+const open = () => {
+  ElMessageBox.confirm(
+    "This action will delete the Project. Continue?",
+    "Warning",
+    {
+      confirmButtonText: "OK",
+      cancelButtonText: "Cancel",
+      type: "warning",
+    }
+  )
+    .then(() => {
+      axios
+        .delete(`http://localhost:3001/api/project/${id}`)
+        .then((res) => {
+          ElNotification({
+            title: "Deleted",
+            type: "success",
+          });
+
+          useRouter().push({ name: "project" });
+        })
+        .catch((error) => {
+          const message = error?.response?.data?.message;
+          console.log(error);
+          if (typeof message == "object") {
+            for (let i in message) {
+              setTimeout(() => {
+                ElNotification({
+                  title: "Error",
+                  message: message[i],
+                  type: "warning",
+                });
+              }, i * 200);
+            }
+          } else {
+            ElNotification({
+              title: "Error",
+              message: message,
+              type: "warning",
+            });
+          }
+        });
+    })
+    .catch(() => {});
+};
+
+const avrage = (rates) => {
+  if (!rates.length) return 0;
+  let sum = 0;
+  for (let i of rates) {
+    sum += i.rate;
+  }
+  return (sum / rates.length).toFixed(1);
+};
 
 onMounted(() => {
   axios

@@ -12,7 +12,7 @@
       :name="name"
       :id="name"
       :placeholder="placeholder"
-      class="text-[14px] leading-[21px] text-[#A098AE] border border-[#C1BBEB] rounded-[5px] p-[15px] w-full focus:outline-none focus:border-[#a098ae]"
+      class="text-[14px] leading-[21px] border border-[#C1BBEB] rounded-[5px] p-[15px] w-full focus:outline-none focus:border-[#a098ae]"
       required
     />
   </div>

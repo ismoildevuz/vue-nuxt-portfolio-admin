@@ -1,8 +1,8 @@
 <template>
-  <div class="p-10">
-    <form @submit.prevent="addProject">
+  <div v-if="data.loaded && data.item" class="p-10">
+    <form @submit.prevent="updateProject">
       <div class="bg-white rounded-[20px]">
-        <FormHeader name="Project" page="add" />
+        <FormHeader name="Project" page="edit" />
 
         <div class="p-[40px] pb-0">
           <div class="flex gap-[24px]">
@@ -36,6 +36,13 @@
                     </div>
                   </template>
                 </el-upload>
+
+                <div :class="`${has_image ? 'block' : 'hidden'} duration-1000`">
+                  <img
+                    :src="`http://localhost:3001/api/image/file/${data.item.image?.file_name}`"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
 
@@ -78,10 +85,14 @@
         </div>
 
         <div class="flex items-center justify-end p-10 pt-0">
-          <SubmitBtn text="Add" />
+          <SubmitBtn text="Save" />
         </div>
       </div>
     </form>
+  </div>
+
+  <div v-else-if="data.loaded">
+    <Error name="Project" path="project" />
   </div>
 </template>
 
@@ -90,36 +101,43 @@ import axios from "axios";
 import { UploadFilled } from "@element-plus/icons-vue";
 import { ElNotification } from "element-plus";
 
-const upload = ref();
+const { id } = useRoute().params;
+
+const upload = ref(null);
+const has_image = ref(false);
 
 const data = reactive({
   name: "",
   description: "",
   link_project: "",
   link_github: "",
+  item: null,
+  loaded: false,
 });
 
 const formData = new FormData();
 
 const addPhoto = (e) => {
+  has_image.value = false;
   formData.append("images", e.raw);
 };
 
 const removePhoto = () => {
+  has_image.value = true;
   formData.delete("images");
 };
 
-const addProject = (e) => {
+const updateProject = (e) => {
   formData.append("name", data.name);
   formData.append("description", data.description);
   formData.append("link_github", data.link_github);
   formData.append("link_project", data.link_project);
-  
+
   axios
-    .post(`http://localhost:3001/api/project`, formData)
+    .patch(`http://localhost:3001/api/project/${id}`, formData)
     .then((res) => {
       ElNotification({
-        title: "Added",
+        title: "Updated",
         type: "success",
       });
 
@@ -127,6 +145,9 @@ const addProject = (e) => {
       data.description = "";
       data.link_github = "";
       data.link_project = "";
+
+      data.item = null;
+      data.loaded = false;
       upload.value.clearFiles();
 
       formData.delete("name");
@@ -135,7 +156,7 @@ const addProject = (e) => {
       formData.delete("link_project");
       formData.delete("images");
 
-      useRouter().push({ name: "project" });
+      useRouter().go(-1);
     })
     .catch((error) => {
       const message = error?.response?.data?.message;
@@ -158,6 +179,46 @@ const addProject = (e) => {
       }
     });
 };
+
+onMounted(() => {
+  axios
+    .get(`http://localhost:3001/api/project/${id}`)
+    .then((res) => {
+      data.item = res.data;
+      data.loaded = true;
+
+      data.name = res.data.name;
+      data.description = res.data.description;
+      data.link_github = res.data.link_github;
+      data.link_project = res.data.link_project;
+
+      if (res.data.image?.file_name) {
+        has_image.value = true;
+      }
+    })
+    .catch((error) => {
+      const message = error?.response?.data?.message;
+      data.loaded = true;
+      console.log(error);
+      if (typeof message == "object") {
+        for (let i in message) {
+          setTimeout(() => {
+            ElNotification({
+              title: "Error",
+              message: message[i],
+              type: "warning",
+            });
+          }, i * 200);
+        }
+      } else {
+        ElNotification({
+          title: "Error",
+          message: message,
+          type: "warning",
+        });
+      }
+    });
+});
 </script>
 
 <style lang="scss" scoped></style>
