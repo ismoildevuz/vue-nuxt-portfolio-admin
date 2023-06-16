@@ -1,9 +1,55 @@
 <template>
-  <div class="min-h-screen bg-slate-400">
-    <h1 class="text-center"><span>Job page</span></h1>
+  <div class="min-h-screen">
+    <div class="p-5">
+      <AddBtn name="job" />
+    </div>
+
+    <div class="grid gap-5 p-5">
+      <div v-for="(el, ind) in data.list" :key="ind">
+        <JobCard @update-list="updateList" :el="el" />
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import axios from "axios";
+
+const data = reactive({
+  list: [],
+});
+
+const updateList = () => {
+  axios
+    .get(`http://localhost:3001/api/job`)
+    .then((res) => {
+      data.list = res.data;
+    })
+    .catch((error) => {
+      const message = error?.response?.data?.message;
+      if (typeof message == "object") {
+        for (let i in message) {
+          setTimeout(() => {
+            ElNotification({
+              title: "Error",
+              message: message[i],
+              type: "warning",
+            });
+          }, i * 200);
+        }
+      } else {
+        ElNotification({
+          title: "Error",
+          message: message,
+          type: "warning",
+        });
+      }
+    });
+};
+
+onMounted(() => {
+  updateList();
+});
+</script>
 
 <style lang="scss" scoped></style>
