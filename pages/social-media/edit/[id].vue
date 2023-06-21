@@ -42,7 +42,7 @@
                     width="50"
                     height="50"
                     class="w-[50px] h-[50px] object-cover rounded-full"
-                    :src="`http://localhost:3001/api/image/file/${data.item.image?.file_name}`"
+                    :src="`https://nest-portfolio-xy2i.onrender.com/api/image/file/${data.item.image?.file_name}`"
                     alt=""
                   />
                 </div>
@@ -116,7 +116,7 @@ const updateItem = (e) => {
   formData.append("link", data.link);
 
   axios
-    .patch(`http://localhost:3001/api/social-media/${id}`, formData)
+    .patch(`https://nest-portfolio-xy2i.onrender.com/api/social-media/${id}`, formData)
     .then((res) => {
       ElNotification({
         title: "Updated",
@@ -160,7 +160,7 @@ const updateItem = (e) => {
 
 onMounted(() => {
   axios
-    .get(`http://localhost:3001/api/social-media/${id}`)
+    .get(`https://nest-portfolio-xy2i.onrender.com/api/social-media/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;

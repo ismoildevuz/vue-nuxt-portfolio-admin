@@ -49,7 +49,7 @@
 
                 <div :class="`${has_image ? 'block' : 'hidden'} duration-1000`">
                   <img
-                    :src="`http://localhost:3001/api/image/file/${data.item.image?.file_name}`"
+                    :src="`https://nest-portfolio-xy2i.onrender.com/api/image/file/${data.item.image?.file_name}`"
                     alt=""
                   />
                 </div>
@@ -122,7 +122,7 @@ const updateItem = (e) => {
   formData.append("body", data.body);
 
   axios
-    .patch(`http://localhost:3001/api/blog/${id}`, formData)
+    .patch(`https://nest-portfolio-xy2i.onrender.com/api/blog/${id}`, formData)
     .then((res) => {
       ElNotification({
         title: "Updated",
@@ -166,7 +166,7 @@ const updateItem = (e) => {
 
 onMounted(() => {
   axios
-    .get(`http://localhost:3001/api/blog/${id}`)
+    .get(`https://nest-portfolio-xy2i.onrender.com/api/blog/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;
