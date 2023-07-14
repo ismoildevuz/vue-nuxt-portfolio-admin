@@ -21,7 +21,7 @@ const data = reactive({
 
 const updateList = () => {
   axios
-    .get(`https://nest-portfolio-xy2i.onrender.com/api/job`)
+    .get(`http://localhost:3001/api/job`)
     .then((res) => {
       data.list = res.data;
     })

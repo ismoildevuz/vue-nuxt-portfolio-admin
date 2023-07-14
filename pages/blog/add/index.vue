@@ -28,13 +28,13 @@
                   @remove="removePhoto"
                   class="upload-demo"
                   drag
-                  name="images"
-                  id="images"
+                  name="image"
+                  id="image"
                   list-type="picture"
                   :limit="1"
                   :auto-upload="false"
                   ref="upload"
-                  accept=".jpg, .png"
+                  accept=".jpeg, .jpg, .png"
                 >
                   <el-icon class="el-icon--upload"><upload-filled /></el-icon>
                   <div class="el-upload__text">
@@ -92,11 +92,11 @@ const data = reactive({
 const formData = new FormData();
 
 const addPhoto = (e) => {
-  formData.append("images", e.raw);
+  formData.append("image", e.raw);
 };
 
 const removePhoto = () => {
-  formData.delete("images");
+  formData.delete("image");
 };
 
 const addItem = (e) => {
@@ -104,7 +104,7 @@ const addItem = (e) => {
   formData.append("body", data.body);
 
   axios
-    .post(`https://nest-portfolio-xy2i.onrender.com/api/blog`, formData)
+    .post(`http://localhost:3001/api/blog`, formData)
     .then((res) => {
       ElNotification({
         title: "Added",
@@ -117,7 +117,7 @@ const addItem = (e) => {
 
       formData.delete("title");
       formData.delete("body");
-      formData.delete("images");
+      formData.delete("image");
 
       useRouter().push({ name: "blog" });
     })

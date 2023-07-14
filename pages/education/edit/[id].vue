@@ -18,13 +18,13 @@
                   @remove="removePhoto"
                   class="upload-demo"
                   drag
-                  name="images"
-                  id="images"
+                  name="image"
+                  id="image"
                   list-type="picture"
                   :limit="1"
                   :auto-upload="false"
                   ref="upload"
-                  accept=".jpg, .png"
+                  accept=".jpeg, .jpg, .png"
                 >
                   <el-icon class="el-icon--upload"><upload-filled /></el-icon>
                   <div class="el-upload__text">
@@ -42,7 +42,7 @@
                     width="50"
                     height="50"
                     class="w-[50px] h-[50px] object-cover rounded-full"
-                    :src="`https://nest-portfolio-xy2i.onrender.com/api/image/file/${data.item.image?.file_name}`"
+                    :src="`http://localhost:3001/api/image/${data.item.image_name}`"
                     alt=""
                   />
                 </div>
@@ -123,12 +123,12 @@ const formData = new FormData();
 
 const addPhoto = (e) => {
   has_image.value = false;
-  formData.append("images", e.raw);
+  formData.append("image", e.raw);
 };
 
 const removePhoto = () => {
   has_image.value = true;
-  formData.delete("images");
+  formData.delete("image");
 };
 
 const updateItem = (e) => {
@@ -138,7 +138,7 @@ const updateItem = (e) => {
   formData.append("date_to", data.date_to);
 
   axios
-    .patch(`https://nest-portfolio-xy2i.onrender.com/api/education/${id}`, formData)
+    .patch(`http://localhost:3001/api/education/${id}`, formData)
     .then((res) => {
       ElNotification({
         title: "Updated",
@@ -158,7 +158,7 @@ const updateItem = (e) => {
       formData.delete("place");
       formData.delete("date_from");
       formData.delete("date_to");
-      formData.delete("images");
+      formData.delete("image");
 
       useRouter().go(-1);
     })
@@ -186,7 +186,7 @@ const updateItem = (e) => {
 
 onMounted(() => {
   axios
-    .get(`https://nest-portfolio-xy2i.onrender.com/api/education/${id}`)
+    .get(`http://localhost:3001/api/education/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;
@@ -196,14 +196,14 @@ onMounted(() => {
       data.date_from = moment(res.data.date_from).format("YYYY-MM-DD");
       data.date_to = moment(res.data.date_to).format("YYYY-MM-DD");
 
-      if (res.data.image?.file_name) {
+      if (res.data.image_name) {
         has_image.value = true;
       }
     })
     .catch((error) => {
       const message = error?.response?.data?.message;
       data.loaded = true;
-      console.log(error);
+      
       if (typeof message == "object") {
         for (let i in message) {
           setTimeout(() => {

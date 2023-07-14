@@ -48,7 +48,7 @@ const updateItem = (e) => {
   };
 
   axios
-    .patch(`https://nest-portfolio-xy2i.onrender.com/api/skill/${id}`, item)
+    .patch(`http://localhost:3001/api/skill/${id}`, item)
     .then((res) => {
       ElNotification({
         title: "Updated",
@@ -86,7 +86,7 @@ const updateItem = (e) => {
 
 onMounted(() => {
   axios
-    .get(`https://nest-portfolio-xy2i.onrender.com/api/skill/${id}`)
+    .get(`http://localhost:3001/api/skill/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;
@@ -96,7 +96,7 @@ onMounted(() => {
     .catch((error) => {
       const message = error?.response?.data?.message;
       data.loaded = true;
-      console.log(error);
+      
       if (typeof message == "object") {
         for (let i in message) {
           setTimeout(() => {

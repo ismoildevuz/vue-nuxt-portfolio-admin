@@ -8,7 +8,7 @@
           width="100"
           height="100"
           class="w-[100px] h-[100px] object-cover rounded-full m-2"
-          :src="`https://nest-portfolio-xy2i.onrender.com/api/image/file/${el.image?.file_name}`"
+          :src="`http://localhost:3001/api/image/${el.image_name}`"
           onerror="this.src='/images/no-image-job.png'"
         />
 
@@ -71,7 +71,7 @@ const open = (id) => {
   )
     .then(() => {
       axios
-        .delete(`https://nest-portfolio-xy2i.onrender.com/api/job/${id}`)
+        .delete(`http://localhost:3001/api/job/${id}`)
         .then((res) => {
           ElNotification({
             title: "Deleted",
@@ -93,7 +93,7 @@ const open = (id) => {
               }, i * 200);
             }
           } else {
-            console.log(error);
+            
             ElNotification({
               title: "Error",
               message: message,

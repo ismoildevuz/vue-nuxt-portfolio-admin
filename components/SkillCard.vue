@@ -54,7 +54,7 @@ const open = (id) => {
   )
     .then(() => {
       axios
-        .delete(`https://nest-portfolio-xy2i.onrender.com/api/skill/${id}`)
+        .delete(`http://localhost:3001/api/skill/${id}`)
         .then((res) => {
           ElNotification({
             title: "Deleted",
@@ -76,7 +76,7 @@ const open = (id) => {
               }, i * 200);
             }
           } else {
-            console.log(error);
+            
             ElNotification({
               title: "Error",
               message: message,

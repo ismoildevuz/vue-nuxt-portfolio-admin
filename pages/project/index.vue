@@ -21,7 +21,7 @@ const data = reactive({
 
 onMounted(() => {
   axios
-    .get(`https://nest-portfolio-xy2i.onrender.com/api/project`)
+    .get(`http://localhost:3001/api/project`)
     .then((res) => {
       data.list = res.data;
     })

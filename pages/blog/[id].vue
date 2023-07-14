@@ -21,7 +21,7 @@
         <img
           height="400"
           class="w-full h-[400px] object-cover select-none"
-          :src="`https://nest-portfolio-xy2i.onrender.com/api/image/file/${data.item.image?.file_name}`"
+          :src="`http://localhost:3001/api/image/${data.item.image_name}`"
           onerror="this.src='/images/no-image-blog.png'"
         />
       </div>
@@ -81,7 +81,7 @@ const open = () => {
   )
     .then(() => {
       axios
-        .delete(`https://nest-portfolio-xy2i.onrender.com/api/blog/${id}`)
+        .delete(`http://localhost:3001/api/blog/${id}`)
         .then((res) => {
           ElNotification({
             title: "Deleted",
@@ -92,7 +92,7 @@ const open = () => {
         })
         .catch((error) => {
           const message = error?.response?.data?.message;
-          console.log(error);
+          
           if (typeof message == "object") {
             for (let i in message) {
               setTimeout(() => {
@@ -117,7 +117,7 @@ const open = () => {
 
 onMounted(() => {
   axios
-    .get(`https://nest-portfolio-xy2i.onrender.com/api/blog/${id}`)
+    .get(`http://localhost:3001/api/blog/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;

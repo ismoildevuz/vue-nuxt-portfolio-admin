@@ -7,7 +7,7 @@
         width="400"
         height="200"
         class="w-[400px] h-[200px] object-cover"
-        :src="`https://nest-portfolio-xy2i.onrender.com/api/image/file/${el.image?.file_name}`"
+        :src="`http://localhost:3001/api/image/${el.image_name}`"
         onerror="this.src='/images/no-image-blog.png'"
       />
       <div class="p-5 flex flex-col justify-between flex-grow">
