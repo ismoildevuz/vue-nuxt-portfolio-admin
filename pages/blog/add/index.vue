@@ -104,7 +104,7 @@ const addItem = (e) => {
   formData.append("body", data.body);
 
   axios
-    .post(`http://localhost:3001/api/blog`, formData)
+    .post(`https://nest-portfolio-xy2i.onrender.com/api/blog`, formData)
     .then((res) => {
       ElNotification({
         title: "Added",

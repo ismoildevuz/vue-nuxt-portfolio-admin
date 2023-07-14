@@ -40,7 +40,7 @@ const addItem = (e) => {
   };
 
   axios
-    .post(`http://localhost:3001/api/skill`, newItem)
+    .post(`https://nest-portfolio-xy2i.onrender.com/api/skill`, newItem)
     .then((res) => {
       ElNotification({
         title: "Added",

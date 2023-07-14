@@ -70,7 +70,7 @@ const signup = () => {
 
   axios
     .post(
-      `http://localhost:3001/api/admin/auth/signup`,
+      `https://nest-portfolio-xy2i.onrender.com/api/admin/auth/signup`,
       newAdmin
     )
     .then((res) => {

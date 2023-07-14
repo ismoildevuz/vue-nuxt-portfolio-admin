@@ -42,7 +42,7 @@
                     width="50"
                     height="50"
                     class="w-[50px] h-[50px] object-cover rounded-full"
-                    :src="`http://localhost:3001/api/image/${data.item.image_name}`"
+                    :src="`https://nest-portfolio-xy2i.onrender.com/api/image/${data.item.image_name}`"
                     alt=""
                   />
                 </div>
@@ -138,7 +138,7 @@ const updateItem = (e) => {
   formData.append("date_to", data.date_to);
 
   axios
-    .patch(`http://localhost:3001/api/job/${id}`, formData)
+    .patch(`https://nest-portfolio-xy2i.onrender.com/api/job/${id}`, formData)
     .then((res) => {
       ElNotification({
         title: "Updated",
@@ -186,7 +186,7 @@ const updateItem = (e) => {
 
 onMounted(() => {
   axios
-    .get(`http://localhost:3001/api/job/${id}`)
+    .get(`https://nest-portfolio-xy2i.onrender.com/api/job/${id}`)
     .then((res) => {
       data.item = res.data;
       data.loaded = true;

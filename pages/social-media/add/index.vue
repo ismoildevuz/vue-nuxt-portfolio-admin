@@ -95,7 +95,7 @@ const addItem = (e) => {
   formData.append("link", data.link);
 
   axios
-    .post(`http://localhost:3001/api/social-media`, formData)
+    .post(`https://nest-portfolio-xy2i.onrender.com/api/social-media`, formData)
     .then((res) => {
       ElNotification({
         title: "Added",

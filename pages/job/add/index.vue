@@ -116,7 +116,7 @@ const addItem = (e) => {
   formData.append("date_to", data.date_to);
 
   axios
-    .post(`http://localhost:3001/api/job`, formData)
+    .post(`https://nest-portfolio-xy2i.onrender.com/api/job`, formData)
     .then((res) => {
       ElNotification({
         title: "Added",

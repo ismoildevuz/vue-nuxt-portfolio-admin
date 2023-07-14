@@ -9,7 +9,7 @@
             width="50"
             height="50"
             class="w-[50px] h-[50px] object-cover rounded-full m-2"
-            :src="`http://localhost:3001/api/image/${el.image_name}`"
+            :src="`https://nest-portfolio-xy2i.onrender.com/api/image/${el.image_name}`"
             onerror="this.src='/images/no-image-sm.png'"
           />
 
@@ -57,7 +57,7 @@ const open = (id) => {
   )
     .then(() => {
       axios
-        .delete(`http://localhost:3001/api/social-media/${id}`)
+        .delete(`https://nest-portfolio-xy2i.onrender.com/api/social-media/${id}`)
         .then((res) => {
           ElNotification({
             title: "Deleted",
